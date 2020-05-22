@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private float _speedBoostMultiplier = 1.5f;
     [SerializeField] private float _fireRate = 0.5f;
     [SerializeField] private int _playerHealth = 3;
+    [SerializeField] private int _ammo = 15;
     [SerializeField] private float _laserVerticalOffset = 1.044f ;
     [SerializeField] private GameObject _singleLaserPrefab;
     [SerializeField] private GameObject _tripleLaserPrefab;
@@ -19,6 +20,8 @@ public class Player : MonoBehaviour {
     [SerializeField] private int _shieldHealth = 3;
     [SerializeField] private GameObject[] _engineFire;
     [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private AudioClip _laserShot;
+    [SerializeField] private AudioClip _laserError;
     
     private float _topPositionLimit = 0.0f;
     private float _bottomPositionLimit = -4.0f;
@@ -31,21 +34,22 @@ public class Player : MonoBehaviour {
     private AudioSource _audioSource;
     private int _shieldHealthNow;
 
+
     private void Start() {
 	    _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
 	    _gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
 	    _spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
-
-	    if (_spriteRenderer == null) {
-		    Debug.Log("Player::_spriteRenderer component missing");
-	    }
-
-	    _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
-
+	    
 	    if (!_spawnManager) { 
 		    Debug.Log("Missing GameObject: Spawn Manager");
 	    }
 
+	    if (!_spriteRenderer) {
+		    Debug.Log("Player::_spriteRenderer component missing");
+	    }
+	    
+	    _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
+	    
 	    if (_uiManager != null)
 		    _uiManager.UpdateLives(_playerHealth);
 		  
@@ -72,10 +76,20 @@ public class Player : MonoBehaviour {
 
     private void FireLaser(GameObject laserPrefab) {
 	    if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0) && Time.time > _nextFire) {
-		    _nextFire = Time.time + _fireRate;
-		   _audioSource.Play();
-		    Instantiate(laserPrefab, transform.position + new Vector3(0, _laserVerticalOffset,0), Quaternion.identity);
+		    if (_ammo > 0) {
+			    _nextFire = Time.time + _fireRate;
+			    _audioSource.clip = _laserShot;
+			    _audioSource.Play();
+			    Instantiate(laserPrefab, transform.position + new Vector3(0, _laserVerticalOffset, 0),
+				    Quaternion.identity);
+			    _ammo--;
+		    }
+		    else {
+			    _audioSource.clip = _laserError;
+			    _audioSource.Play();
+		    }
 	    }
+	    
     }
     
     private void CalculateMovement() {
