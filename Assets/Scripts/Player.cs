@@ -16,8 +16,10 @@ public class Player : MonoBehaviour {
     [SerializeField] private GameObject _tripleLaserPrefab;
     [SerializeField] private GameObject _playerDestroyed;
     [SerializeField] private GameObject _shields;
+    [SerializeField] private int _shieldHealth = 3;
     [SerializeField] private GameObject[] _engineFire;
-
+    [SerializeField] private SpriteRenderer _spriteRenderer;
+    
     private float _topPositionLimit = 0.0f;
     private float _bottomPositionLimit = -4.0f;
     private float _sidePositionLimit = 9.78f;
@@ -27,11 +29,18 @@ public class Player : MonoBehaviour {
     private UIManager _uiManager;
     private SpawnManager _spawnManager;
     private AudioSource _audioSource;
+    private int _shieldHealthNow;
 
     private void Start() {
 	    _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
 	    _gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
 	    _spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+
+	    if (_spriteRenderer == null) {
+		    Debug.Log("Player::_spriteRenderer component missing");
+	    }
+
+	    _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
 
 	    if (!_spawnManager) { 
 		    Debug.Log("Missing GameObject: Spawn Manager");
@@ -41,7 +50,7 @@ public class Player : MonoBehaviour {
 		    _uiManager.UpdateLives(_playerHealth);
 		  
 	    _audioSource = GetComponent<AudioSource>();
-	   }
+	}
 
     void Update()
     {
@@ -106,8 +115,17 @@ public class Player : MonoBehaviour {
     
     public void Damage() {
 	    if (shieldsActive) {
-		    shieldsActive = false;
-		    _shields.SetActive(false);
+		    _shieldHealthNow--;
+		    if (_shieldHealthNow == 2) {
+			    _spriteRenderer.color = new Color(1,1,1,0.25f);
+		    }
+		    else if (_shieldHealthNow == 1){
+			    _spriteRenderer.color = new Color(1,1,1,0.1f);
+		    }
+		    else {
+				shieldsActive = false;
+				_shields.SetActive(false);
+		    }
 	    }
 	    else {
 		    _playerHealth--;
@@ -134,6 +152,7 @@ public class Player : MonoBehaviour {
     }
 
     private IEnumerator TripleShotPowerDownRoutine() {
+	    //Todo: Find a way to add time when collecting a second power up.
 	    yield return new WaitForSeconds(5.0f);
 	    canTripleShot = false;
     }
@@ -149,8 +168,9 @@ public class Player : MonoBehaviour {
     }
 
     public void ShieldPowerUpOn() {
-	    //Todo: Create shield strength.
 	    shieldsActive = true;
+	    _shieldHealthNow = _shieldHealth;
+	    _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
 	    _shields.SetActive(true);
     }
 }
