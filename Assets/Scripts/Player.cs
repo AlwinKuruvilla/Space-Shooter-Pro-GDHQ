@@ -45,6 +45,12 @@ public class Player : MonoBehaviour {
 
     void Update()
     {
+	    if (Input.GetKey(KeyCode.LeftShift)) {
+		    canSpeedBoost = true;
+	    } else if (Input.GetKeyUp(KeyCode.LeftShift)) {
+		    canSpeedBoost = false;
+	    }
+	    
         CalculateMovement();
 
         if (canTripleShot) {
