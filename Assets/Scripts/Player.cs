@@ -11,7 +11,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private float _speedBoostMultiplier = 1.5f;
     [SerializeField] private float _fireRate = 0.5f;
     [SerializeField] private int _playerHealth = 3;
-    [SerializeField] private int _ammo = 15;
+    [SerializeField] private int _totalAmmo = 15;
     [SerializeField] private float _laserVerticalOffset = 1.044f ;
     [SerializeField] private GameObject _singleLaserPrefab;
     [SerializeField] private GameObject _tripleLaserPrefab;
@@ -33,6 +33,7 @@ public class Player : MonoBehaviour {
     private SpawnManager _spawnManager;
     private AudioSource _audioSource;
     private int _shieldHealthNow;
+    [SerializeField] private int ammoNow;
 
 
     private void Start() {
@@ -52,6 +53,8 @@ public class Player : MonoBehaviour {
 	    
 	    if (_uiManager != null)
 		    _uiManager.UpdateLives(_playerHealth);
+
+	    ResetAmmo();
 		  
 	    _audioSource = GetComponent<AudioSource>();
 	}
@@ -76,13 +79,13 @@ public class Player : MonoBehaviour {
 
     private void FireLaser(GameObject laserPrefab) {
 	    if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0) && Time.time > _nextFire) {
-		    if (_ammo > 0) {
+		    if (ammoNow > 0) {
 			    _nextFire = Time.time + _fireRate;
 			    _audioSource.clip = _laserShot;
 			    _audioSource.Play();
 			    Instantiate(laserPrefab, transform.position + new Vector3(0, _laserVerticalOffset, 0),
 				    Quaternion.identity);
-			    _ammo--;
+			    ammoNow--;
 		    }
 		    else {
 			    _audioSource.clip = _laserError;
@@ -186,6 +189,10 @@ public class Player : MonoBehaviour {
 	    _shieldHealthNow = _shieldHealth;
 	    _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
 	    _shields.SetActive(true);
+    }
+
+    public void ResetAmmo() {
+	    ammoNow = _totalAmmo;
     }
 }
 

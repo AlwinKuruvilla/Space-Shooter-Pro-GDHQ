@@ -34,6 +34,9 @@ public class PowerUp : MonoBehaviour {
 					case 2:	
 						player.ShieldPowerUpOn();
 						break;	
+					case 3:
+						player.ResetAmmo();
+						break;
 				}
 			}
 

@@ -19,12 +19,14 @@ public class SpawnManager : MonoBehaviour
     public void StartSpawning() {
         StartCoroutine(SpawnEnemies());
         StartCoroutine(SpawnPowerUps());
+        StartCoroutine(SpawnAmmo());
     }
 
 
     public void StopSpawning() {
         StopCoroutine(SpawnEnemies());
         StopCoroutine(SpawnPowerUps());
+        StopCoroutine(SpawnAmmo());
     }
 
     private IEnumerator SpawnEnemies() {
@@ -46,6 +48,13 @@ public class SpawnManager : MonoBehaviour
         while (true) {
             yield return new WaitForSeconds(5.0f);
             Instantiate(powerUps[Random.Range(0,3)],transform.position,Quaternion.identity);
+        }
+    }
+    
+    private IEnumerator SpawnAmmo() {
+        while (true) {
+            yield return new WaitForSeconds(3.0f);
+            Instantiate(powerUps[3],transform.position,Quaternion.identity);
         }
     }
 }
