@@ -6,11 +6,11 @@ public class Player : MonoBehaviour {
 	public bool canSpeedBoost;
 	public bool shieldsActive;
 	public bool screenEdgeWrap;
+	public int playerHealth = 3;
 	
     [SerializeField] private float _speed = 3.5f;
     [SerializeField] private float _speedBoostMultiplier = 1.5f;
     [SerializeField] private float _fireRate = 0.5f;
-    [SerializeField] private int _playerHealth = 3;
     [SerializeField] private int _totalAmmo = 15;
     [SerializeField] private float _laserVerticalOffset = 1.044f ;
     [SerializeField] private GameObject _singleLaserPrefab;
@@ -52,7 +52,7 @@ public class Player : MonoBehaviour {
 	    _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
 	    
 	    if (_uiManager != null)
-		    _uiManager.UpdateLives(_playerHealth);
+		    _uiManager.UpdateLives(playerHealth);
 
 	    ResetAmmo();
 		  
@@ -145,20 +145,14 @@ public class Player : MonoBehaviour {
 		    }
 	    }
 	    else {
-		    _playerHealth--;
-		    _uiManager.UpdateLives(_playerHealth);
-		    if (_playerHealth == 2) {
-			    _engineFire[0].SetActive(true);
-		    }
-		    else if (_playerHealth == 1) {
-			    _engineFire[1].SetActive(true);
-		    }
+		    UpdateLives(-1);
 	    }
 
-	    if (_playerHealth == 0) {
+	    if (playerHealth == 0) {
 			_spawnManager.StopSpawning();
 		    Instantiate(_playerDestroyed, transform.position, Quaternion.identity);
 		    _uiManager.GameOver();
+		    Destroy(gameObject.GetComponent<Collider2D>());
 		    Destroy(gameObject,0.5f);
 	    }
     }
@@ -193,6 +187,28 @@ public class Player : MonoBehaviour {
 
     public void ResetAmmo() {
 	    ammoNow = _totalAmmo;
+    }
+
+    public void AddLife() {
+	    UpdateLives(1);
+    }
+
+    private void UpdateLives(int life) {
+	    playerHealth += life;
+	    if (playerHealth > 3) {
+		    playerHealth = 3;
+	    }
+	    _uiManager.UpdateLives(playerHealth);
+	    if (playerHealth == 3) {
+		    _engineFire[0].SetActive(false);
+	    }
+	    if (playerHealth == 2) {
+		    _engineFire[0].SetActive(true);
+		    _engineFire[1].SetActive(false);
+	    }
+	    else if (playerHealth == 1) {
+		    _engineFire[1].SetActive(true);
+	    }
     }
 }
 

@@ -23,6 +23,7 @@ public class Asteroid : MonoBehaviour {
 		_spawnManager.StartSpawning();
 		Destroy(other.gameObject);
 		AudioSource.PlayClipAtPoint(explosionSound,Camera.main.transform.position);
+		Destroy(gameObject.GetComponent<Collider2D>());
 		Destroy(gameObject,0.5f);
 	}
 }

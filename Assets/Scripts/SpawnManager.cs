@@ -11,15 +11,25 @@ public class SpawnManager : MonoBehaviour
     private GameManager _gameManager;
     [SerializeField] private UIManager _uiManager;
     private float _spawnTime = 5.0f;
+    private Player _player;
 
     void Start() {
         _gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        if (!_gameManager) {
+            Debug.LogError("SpawnManager could not find the GameManager");
+        }
+
+        _player = GameObject.Find("Player").GetComponent<Player>();
+        if (!_player) {
+            Debug.LogError("SpawnManager could not find the Player");
+        }
     }
 
     public void StartSpawning() {
         StartCoroutine(SpawnEnemies());
         StartCoroutine(SpawnPowerUps());
         StartCoroutine(SpawnAmmo());
+        StartCoroutine(SpawnLife());
     }
 
 
@@ -27,6 +37,7 @@ public class SpawnManager : MonoBehaviour
         StopCoroutine(SpawnEnemies());
         StopCoroutine(SpawnPowerUps());
         StopCoroutine(SpawnAmmo());
+        StopCoroutine(SpawnLife());
     }
 
     private IEnumerator SpawnEnemies() {
@@ -55,6 +66,13 @@ public class SpawnManager : MonoBehaviour
         while (true) {
             yield return new WaitForSeconds(3.0f);
             Instantiate(powerUps[3],transform.position,Quaternion.identity);
+        }
+    }
+    
+    private IEnumerator SpawnLife() {
+        while (true) {
+            yield return new WaitForSeconds(15.0f);
+            Instantiate(powerUps[4],transform.position,Quaternion.identity);
         }
     }
 }
