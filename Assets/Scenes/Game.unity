@@ -1321,6 +1321,7 @@ MonoBehaviour:
   - {fileID: 5539193858052078453, guid: 4132935c1dcb6fc4ab5ac4fdd381f53b, type: 3}
   - {fileID: 2142210077384643673, guid: 8a2fe46b53a0e1c46b408fdb2041222e, type: 3}
   - {fileID: 2906785838941272351, guid: 5ab284cf18dd4d143b1b643863b7612d, type: 3}
+  - {fileID: 1986203613378934846, guid: abcf25ea1706d324e8dbab5445abe6ba, type: 3}
   _uiManager: {fileID: 304023451}
 --- !u!4 &2139998670
 Transform:

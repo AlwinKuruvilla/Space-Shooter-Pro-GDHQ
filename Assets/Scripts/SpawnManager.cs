@@ -34,6 +34,7 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnPowerUps());
         StartCoroutine(SpawnAmmo());
         StartCoroutine(SpawnLife());
+        StartCoroutine(SpawnMissile());
     }
 
 
@@ -42,6 +43,7 @@ public class SpawnManager : MonoBehaviour
         StopCoroutine(SpawnPowerUps());
         StopCoroutine(SpawnAmmo());
         StopCoroutine(SpawnLife());
+        StopCoroutine(SpawnMissile());
     }
 
     private IEnumerator SpawnEnemies() {
@@ -72,6 +74,13 @@ public class SpawnManager : MonoBehaviour
         while (true) {
             yield return new WaitForSeconds(15.0f);
             Instantiate(powerUps[4],transform.position,Quaternion.identity);
+        }
+    }
+    
+    private IEnumerator SpawnMissile() {
+        while (true) {
+            yield return new WaitForSeconds(30.0f);
+            Instantiate(powerUps[5],transform.position,Quaternion.identity);
         }
     }
 }

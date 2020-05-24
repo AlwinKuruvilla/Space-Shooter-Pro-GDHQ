@@ -2,7 +2,7 @@
 
 public class PowerUp : MonoBehaviour {
 	[SerializeField] private float travelSpeed = 3.0f;
-	[SerializeField] private int powerUpId; //0 = Triple shot, 1 = Speed Boost, 2 = Shields
+	[SerializeField] private int powerUpId;
 	[SerializeField] private AudioClip clip;
 
 	private const float BottomPositionLimit = -6.0f;
@@ -39,6 +39,9 @@ public class PowerUp : MonoBehaviour {
 						break;
 					case 4:
 						player.AddLife();
+						break;
+					case 5:
+						player.MissilePowerUpOn();
 						break;
 				}
 			}

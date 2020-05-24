@@ -175,6 +175,15 @@ public class Player : MonoBehaviour {
 	    }
     }
 
+    public void MissilePowerUpOn() {
+	    canMissile = true;
+	    StartCoroutine(MissilePowerDownRoutine());
+    }
+
+    private IEnumerator MissilePowerDownRoutine() {
+	    yield return new WaitForSeconds(5.0f);
+	    canMissile = false;
+    }
     public void TripleShotPowerUpOn() {
 	    canTripleShot = true;
 	    StartCoroutine(TripleShotPowerDownRoutine());
