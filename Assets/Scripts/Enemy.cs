@@ -42,13 +42,20 @@ public class Enemy : MonoBehaviour
  		if (col.CompareTag("Laser")) {
  			enemyHealth -= 1;
  			Destroy(col.gameObject);
- 			if (enemyHealth < 1) {
- 				if (_uiManager != null)
- 					_uiManager.UpdateScore();
- 				AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
- 				Destroy(gameObject);
- 				Instantiate(enemyDestroyed, transform.position, Quaternion.identity);
-            }
- 		}
+        }
+        
+        if (col.CompareTag("Missile")) {
+	        enemyHealth -= 5;
+	        Destroy(col.gameObject);
+        }
+        
+        if (enemyHealth < 1) {
+	        if (_uiManager != null)
+		        _uiManager.UpdateScore();
+	        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
+	        Destroy(gameObject);
+	        Instantiate(enemyDestroyed, transform.position, Quaternion.identity);
+        }
+        
  	}
 }

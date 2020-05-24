@@ -12,8 +12,12 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private UIManager _uiManager;
     private float _spawnTime = 5.0f;
     private Player _player;
+    private bool _isUiManagerNotNull;
 
     void Start() {
+        if (!_uiManager) {
+            Debug.LogError("SpawnManager needs a UIManager reference"); 
+        }
         _gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         if (!_gameManager) {
             Debug.LogError("SpawnManager could not find the GameManager");
@@ -42,13 +46,8 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnEnemies() {
         while (true) {
-            if (_uiManager != null) {
-                if (_uiManager.score > 100) {
-                    _spawnTime = 500.0f / _uiManager.score;
-                }
-            }
-            else {
-                Debug.Log("UI is empty");
+            if (_uiManager.score > 100) {
+                _spawnTime = 500.0f / _uiManager.score;
             }
             yield return new WaitForSeconds(_spawnTime);
             Instantiate(enemyShipPrefab,enemyContainer.transform);

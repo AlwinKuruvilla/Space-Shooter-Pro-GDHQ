@@ -5,6 +5,7 @@ public class Player : MonoBehaviour {
 	public bool canTripleShot;
 	public bool canSpeedBoost;
 	public bool shieldsActive;
+	public bool canMissile;
 	public bool screenEdgeWrap;
 	public int playerHealth = 3;
 	
@@ -22,7 +23,8 @@ public class Player : MonoBehaviour {
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private AudioClip _laserShot;
     [SerializeField] private AudioClip _laserError;
-    
+	[SerializeField] private AudioClip _missileLaunch;
+	
     private float _topPositionLimit = 0.0f;
     private float _bottomPositionLimit = -4.0f;
     private float _sidePositionLimit = 9.78f;
@@ -33,7 +35,10 @@ public class Player : MonoBehaviour {
     private SpawnManager _spawnManager;
     private AudioSource _audioSource;
     private int _shieldHealthNow;
+    private GameObject currentMissile;
     [SerializeField] private int ammoNow;
+    [SerializeField] private GameObject missilePrefab;
+
 
 
     private void Start() {
@@ -72,9 +77,22 @@ public class Player : MonoBehaviour {
         if (canTripleShot) {
 	        FireLaser(_tripleLaserPrefab);
         }
+        else if (canMissile) {
+	        FireMissile(missilePrefab);
+        }
         else {
 	        FireLaser(_singleLaserPrefab);
         }
+    }
+
+    private void FireMissile(GameObject missile) {
+	    if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0) && !currentMissile) {
+			_nextFire = Time.time + _fireRate;
+		    _audioSource.clip = _missileLaunch;
+		    _audioSource.Play();
+		    currentMissile = Instantiate(missile, transform.position + new Vector3(0, 0, 0),
+			    Quaternion.identity);
+	    }
     }
 
     private void FireLaser(GameObject laserPrefab) {

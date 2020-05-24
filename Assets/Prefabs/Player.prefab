@@ -230,11 +230,13 @@ MonoBehaviour:
   canTripleShot: 0
   canSpeedBoost: 0
   shieldsActive: 0
+  canMissile: 0
   screenEdgeWrap: 1
+  playerHealth: 3
   _speed: 5
   _speedBoostMultiplier: 2
   _fireRate: 0.1
-  _playerHealth: 3
+  _totalAmmo: 15
   _laserVerticalOffset: 1.044
   _singleLaserPrefab: {fileID: 3040719371777095847, guid: f7219f780e0e3264e93478b50bde389e, type: 3}
   _tripleLaserPrefab: {fileID: 5829062483389320361, guid: ceb425539fc0dc94995090f94e6cddb6, type: 3}
@@ -245,6 +247,11 @@ MonoBehaviour:
   - {fileID: 2870511697182465925}
   - {fileID: 8159287880019723749}
   _spriteRenderer: {fileID: 3579579414283063199}
+  _laserShot: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  _laserError: {fileID: 8300000, guid: 91fc397fdb4531a49a74b0c65ed1399f, type: 3}
+  _missileLaunch: {fileID: 8300000, guid: 11e56d7f7650a90458f0fc76f95a2e05, type: 3}
+  ammoNow: 0
+  missilePrefab: {fileID: 364189038637692704, guid: 07a2c53209ac61a45a7f141816aff8ac, type: 3}
 --- !u!82 &3795253109953985236
 AudioSource:
   m_ObjectHideFlags: 0
@@ -255,7 +262,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
