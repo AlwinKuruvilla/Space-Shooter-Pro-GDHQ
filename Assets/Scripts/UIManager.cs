@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour
     public GameObject gameOverText;
     public GameObject restartText;
     public bool gameOver = false;
-
+    public Slider thrustSlider;
     public int score = 0;
 
 	private void Start() {
@@ -55,5 +55,13 @@ public class UIManager : MonoBehaviour
 		    gameOverText.SetActive(false);
 		    yield return new WaitForSeconds(0.5f);
 	    }
+    }
+
+    public void ChangeThrust(float thrust) {
+	    thrustSlider.value = thrust;
+    }
+
+    public void SetMaxThrust(float totalThrust) {
+	    thrustSlider.maxValue = totalThrust;
     }
 }

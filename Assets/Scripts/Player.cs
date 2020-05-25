@@ -38,7 +38,8 @@ public class Player : MonoBehaviour {
     private GameObject currentMissile;
     [SerializeField] private int ammoNow;
     [SerializeField] private GameObject missilePrefab;
-
+    [SerializeField] private float thrustAmount = 50.0f;
+    [SerializeField] private float totalThrust;
 
 
     private void Start() {
@@ -62,17 +63,28 @@ public class Player : MonoBehaviour {
 	    ResetAmmo();
 		  
 	    _audioSource = GetComponent<AudioSource>();
-	}
+	    totalThrust = thrustAmount;
+	    _uiManager.ChangeThrust(totalThrust);
+	    _uiManager.SetMaxThrust(totalThrust);
+    }
 
     void Update()
     {
-	    if (Input.GetKey(KeyCode.LeftShift)) {
+	    //THRUSTERS
+	    if (Input.GetKey(KeyCode.LeftShift) && thrustAmount > 0) {
 		    canSpeedBoost = true;
-	    } else if (Input.GetKeyUp(KeyCode.LeftShift)) {
-		    canSpeedBoost = false;
+		    thrustAmount -= 20.0f * Time.deltaTime;
+		    _uiManager.ChangeThrust(thrustAmount);
 	    }
-	    
-        CalculateMovement();
+	    else {
+		    canSpeedBoost = false;
+		    if (thrustAmount < totalThrust) {
+			    thrustAmount += 6.0f * Time.deltaTime;
+			    _uiManager.ChangeThrust(thrustAmount);
+		    }
+	    }
+
+	    CalculateMovement();
 
         if (canTripleShot) {
 	        FireLaser(_tripleLaserPrefab);
