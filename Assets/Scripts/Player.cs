@@ -24,6 +24,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private AudioClip _laserShot;
     [SerializeField] private AudioClip _laserError;
 	[SerializeField] private AudioClip _missileLaunch;
+	[SerializeField] private CameraShake _cameraShake;
 	
     private float _topPositionLimit = 0.0f;
     private float _bottomPositionLimit = -4.0f;
@@ -176,6 +177,7 @@ public class Player : MonoBehaviour {
 	    }
 	    else {
 		    UpdateLives(-1);
+		    _cameraShake.StartCameraShake();
 	    }
 
 	    if (playerHealth == 0) {

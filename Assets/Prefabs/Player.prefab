@@ -250,8 +250,11 @@ MonoBehaviour:
   _laserShot: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _laserError: {fileID: 8300000, guid: 91fc397fdb4531a49a74b0c65ed1399f, type: 3}
   _missileLaunch: {fileID: 8300000, guid: 11e56d7f7650a90458f0fc76f95a2e05, type: 3}
+  _cameraShake: {fileID: 0}
   ammoNow: 0
   missilePrefab: {fileID: 364189038637692704, guid: 07a2c53209ac61a45a7f141816aff8ac, type: 3}
+  thrustAmount: 50
+  totalThrust: 50
 --- !u!82 &3795253109953985236
 AudioSource:
   m_ObjectHideFlags: 0
