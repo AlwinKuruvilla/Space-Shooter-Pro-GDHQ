@@ -10,13 +10,21 @@ public class UIManager : MonoBehaviour
     public Sprite[] lives;
     public Image livesImageDisplay;
     public Text scoreText;
+    public Text ammoText;
     public GameObject gameOverText;
     public GameObject restartText;
     public bool gameOver = false;
     public Slider thrustSlider;
     public int score = 0;
 
-	private void Start() {
+    private Player _player;
+
+    private void Start() {
+	    _player = GameObject.Find("Player").GetComponent<Player>();
+	    if (!_player) {
+		    Debug.LogError("UIManager could not find the Player");
+	    }
+		
 		scoreText.text = "Score: " + score;
 	}
 
@@ -31,6 +39,8 @@ public class UIManager : MonoBehaviour
 				SceneManager.LoadScene(0);
 			}
 		}
+
+		ammoText.text = "Ammo: " + _player.ammoNow + "/" + _player._totalAmmo;
 	}
 
 	public void UpdateLives(int currentHealth) {

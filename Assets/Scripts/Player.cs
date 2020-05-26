@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private float _speed = 3.5f;
     [SerializeField] private float _speedBoostMultiplier = 1.5f;
     [SerializeField] private float _fireRate = 0.5f;
-    [SerializeField] private int _totalAmmo = 15;
+    public int _totalAmmo = 15;
     [SerializeField] private float _laserVerticalOffset = 1.044f ;
     [SerializeField] private GameObject _singleLaserPrefab;
     [SerializeField] private GameObject _tripleLaserPrefab;
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour {
     private AudioSource _audioSource;
     private int _shieldHealthNow;
     private GameObject currentMissile;
-    [SerializeField] private int ammoNow;
+    public int ammoNow;
     [SerializeField] private GameObject missilePrefab;
     [SerializeField] private float thrustAmount = 50.0f;
     [SerializeField] private float totalThrust;
@@ -210,14 +210,16 @@ public class Player : MonoBehaviour {
     }
 
     public void SpeedBoostPowerUpOn() {
-	    canSpeedBoost = true;
-	    StartCoroutine(SpeedBoostPowerDownRoutine());
+	    // canSpeedBoost = true;
+	    // StartCoroutine(SpeedBoostPowerDownRoutine());
+	    thrustAmount = totalThrust;
+	    _uiManager.ChangeThrust(thrustAmount);
     }
 
-    private IEnumerator SpeedBoostPowerDownRoutine() {
-	    yield return new WaitForSeconds(5.0f);
-	    canSpeedBoost = false;
-    }
+    // private IEnumerator SpeedBoostPowerDownRoutine() {
+	   //  yield return new WaitForSeconds(5.0f);
+	   //  canSpeedBoost = false;
+    // }
 
     public void ShieldPowerUpOn() {
 	    shieldsActive = true;

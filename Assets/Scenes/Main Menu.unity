@@ -1267,17 +1267,15 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Instructions:
-
-    Press Enter to begin
+  m_Text: 'Controls:
 
 
-    Controls:
+    Arrows = Move
 
-    Arrows =
-    Move
+    Space or LMB = Fire
 
-    Space or LMB = Fire'
+    Left Shift
+    = Thrusters'
 --- !u!222 &1725182893
 CanvasRenderer:
   m_ObjectHideFlags: 0
