@@ -87,11 +87,11 @@ public class Player : MonoBehaviour {
 
 	    CalculateMovement();
 
-        if (canTripleShot) {
-	        FireLaser(_tripleLaserPrefab);
-        }
-        else if (canMissile) {
+        if (canMissile) {
 	        FireMissile(missilePrefab);
+        }
+        else if (canTripleShot) {
+	        FireLaser(_tripleLaserPrefab);
         }
         else {
 	        FireLaser(_singleLaserPrefab);
