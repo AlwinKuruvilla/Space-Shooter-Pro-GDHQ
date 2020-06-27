@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
  	[SerializeField] GameObject enemyDestroyed;
  	[SerializeField] private AudioClip clip;
  	private UIManager _uiManager;
+    private SpawnManager _spawnManager;
     private float randomX;
     private float _topPositionLimit;
     private float _bottomPositionLimit = -6.0f;
@@ -18,7 +19,8 @@ public class Enemy : MonoBehaviour
  	private void Start() {
 	    randomX = Random.Range(-_sidePositionLimit, _sidePositionLimit);
  		_uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
-		_topPositionLimit = transform.position.y; 
+        _spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+        _topPositionLimit = transform.position.y; 
  		transform.position = new Vector3(randomX, _topPositionLimit, 0);
         movement = Random.Range(1, 4);
     }
@@ -58,6 +60,7 @@ public class Enemy : MonoBehaviour
  			if (player != null) player.Damage();
  			AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
             Destroy(gameObject);
+            _spawnManager.currentWave.Dequeue();
  			Instantiate(enemyDestroyed, transform.position, Quaternion.identity);
  		}
   

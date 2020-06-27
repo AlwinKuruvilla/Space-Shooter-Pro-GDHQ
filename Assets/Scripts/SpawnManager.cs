@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -7,14 +9,19 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject enemyShipPrefab;
     [SerializeField] private GameObject enemyContainer;
     [SerializeField] private GameObject[] powerUps;
-
+    [SerializeField] private int waveNumber;
+    
+    
     private GameManager _gameManager;
-    [SerializeField] private UIManager _uiManager;
-    private float _spawnTime = 5.0f;
+    private UIManager _uiManager;
+    private float _enemySpawnTime = 2.0f;
     private Player _player;
     private bool _isUiManagerNotNull;
-
+    private int _wave = 0;
+    public Queue <GameObject> currentWave = new Queue<GameObject>();
+    
     void Start() {
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         if (!_uiManager) {
             Debug.LogError("SpawnManager needs a UIManager reference"); 
         }
@@ -22,15 +29,13 @@ public class SpawnManager : MonoBehaviour
         if (!_gameManager) {
             Debug.LogError("SpawnManager could not find the GameManager");
         }
-
         _player = GameObject.Find("Player").GetComponent<Player>();
         if (!_player) {
             Debug.LogError("SpawnManager could not find the Player");
         }
     }
-
+    
     public void StartSpawning() {
-        StartCoroutine(SpawnEnemies());
         StartCoroutine(SpawnPowerUps());
         StartCoroutine(SpawnAmmo());
         StartCoroutine(SpawnLife());
@@ -39,20 +44,29 @@ public class SpawnManager : MonoBehaviour
 
 
     public void StopSpawning() {
-        StopCoroutine(SpawnEnemies());
-        StopCoroutine(SpawnPowerUps());
-        StopCoroutine(SpawnAmmo());
-        StopCoroutine(SpawnLife());
-        StopCoroutine(SpawnMissile());
+        // StopCoroutine(SpawnEnemies());
+        // StopCoroutine(SpawnPowerUps());
+        // StopCoroutine(SpawnAmmo());
+        // StopCoroutine(SpawnLife());
+        // StopCoroutine(SpawnMissile());
+        StopAllCoroutines();
     }
 
-    private IEnumerator SpawnEnemies() {
+    private IEnumerator SpawnWave(int waveNumber) {
         while (true) {
-            if (_uiManager.score > 100) {
-                _spawnTime = 500.0f / _uiManager.score;
+            if (currentWave.Count == 0) {
+                int numEnemies = 5 + (_wave * 5);
+                StartCoroutine(SpawnEnemies(numEnemies));
+                waveNumber++;
             }
-            yield return new WaitForSeconds(_spawnTime);
-            Instantiate(enemyShipPrefab,enemyContainer.transform);
+        }
+    }
+
+    private IEnumerator SpawnEnemies(int numEnemies) {
+        for (int i = 0; i < numEnemies; i++) {
+            GameObject enemy = Instantiate(enemyShipPrefab,enemyContainer.transform);
+            currentWave.Enqueue(enemy);
+            yield return new WaitForSeconds(_enemySpawnTime);
         }
     }
 	
